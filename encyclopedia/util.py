@@ -1,7 +1,11 @@
 import re
 
+import ifilter as ifilter
+import markdown
+
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+
 
 
 def list_entries():
@@ -32,6 +36,12 @@ def get_entry(title):
     """
     try:
         f = default_storage.open(f"entries/{title}.md")
-        return f.read().decode("utf-8")
+        text = f.read().decode("utf-8")
+        return  markdown.markdown(text)
     except FileNotFoundError:
-        return None
+        return "<h3>Sorry, the requested page was not found.</h3>"
+
+
+import itertools
+
+[i for i in ifilter(lambda x: x % 5, islice(count(5),10))]
